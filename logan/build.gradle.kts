@@ -9,6 +9,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.dokka)
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 kotlin {
@@ -114,7 +115,7 @@ version = "1.0.0"
 mavenPublishing {
     configure(
         KotlinMultiplatform(
-            javadocJar = JavadocJar.None(),
+            javadocJar = JavadocJar.Dokka("dokkaHtml"),
             sourcesJar = true,
             androidVariantsToPublish = listOf("release"),
         )
@@ -129,6 +130,13 @@ mavenPublishing {
         description = "A Kotlin Multiplatform library for platform agnostic logging"
         inceptionYear = "2025"
         url = "https://bini.sh/projects/logan"
+        licenses {
+            license {
+                name = "MIT License"
+                url = "https://opensource.org/licenses/MIT"
+                distribution = "repo"
+            }
+        }
         developers {
             developer {
                 id = "666"
