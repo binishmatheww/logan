@@ -3,7 +3,7 @@ package com.binishmatheww.logan
 /**
  * Created by Binish Mathew in March 2025.
  *
- * email: binishmatheww@gmail.com
+ * email: mail@bini.sh, binishmatheww@gmail.com
  *
  * website: https://bini.sh
  */

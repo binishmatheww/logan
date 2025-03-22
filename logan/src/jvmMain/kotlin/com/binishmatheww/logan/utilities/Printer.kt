@@ -20,7 +20,7 @@ package com.binishmatheww.logan.utilities
  *
  * All credit goes to the great maintainers of The Android Open Source Project and the Android team at Google.
  *
- * email: binishmatheww@gmail.com
+ * email: mail@bini.sh, binishmatheww@gmail.com
  *
  * website: https://bini.sh
  */

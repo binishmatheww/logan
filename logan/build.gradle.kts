@@ -109,7 +109,7 @@ android {
 
 group = "com.binishmatheww"
 val artifactId = "logan"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 mavenPublishing {
     configure(
@@ -133,7 +133,7 @@ mavenPublishing {
             developer {
                 id = "666"
                 name = "Binish Mathew"
-                email = "binishmatheww@gmail.com"
+                email = "mail@bini.sh"
                 url = "https://bini.sh"
                 roles.add("Software Engineer")
             }
@@ -146,35 +146,4 @@ mavenPublishing {
     }
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
-}
-
-publishing {
-    val localProperties = Properties()
-    val localPropertiesFile = file("../local.properties")
-    if (localPropertiesFile.canRead()) {
-        localProperties.load(localPropertiesFile.inputStream())
-    }
-    val mavenUsername = localProperties.getProperty("mavenUsername").orEmpty()
-    val mavenPassword = localProperties.getProperty("mavenPassword").orEmpty()
-    if (mavenUsername.isBlank()) {
-        throw Exception("mavenUsername is not set in local.properties")
-    }
-    if (mavenPassword.isBlank()) {
-        throw Exception("mavenPassword is not set in local.properties")
-    }
-    val mavenUrl = uri(
-        if (version.toString().endsWith("SNAPSHOT")) "https://central.sonatype.com/repository/maven-snapshots/"
-        else throw Exception("URL setup is not done yet")//"https://central.sonatype.com/repository/maven-snapshots"
-    )
-    repositories {
-        maven {
-            name = "Logan"
-            description = "A Kotlin Multiplatform library for platform agnostic logging"
-            url = mavenUrl
-            credentials {
-                username = mavenUsername
-                password = mavenPassword
-            }
-        }
-    }
 }
