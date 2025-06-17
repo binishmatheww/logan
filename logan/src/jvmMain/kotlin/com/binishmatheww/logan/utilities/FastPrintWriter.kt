@@ -33,6 +33,7 @@ import java.nio.charset.CodingErrorAction
  * website: https://bini.sh
  */
 class FastPrintWriter : PrintWriter {
+
     private class DummyWriter : Writer() {
         override fun close() {
             throw UnsupportedOperationException("Shouldn't be here")
@@ -214,12 +215,14 @@ class FastPrintWriter : PrintWriter {
 
     @Throws(IOException::class)
     private fun flushBytesLocked() {
-        if (!mIoError) {
-            var position: Int
-            if (mBytes!!.position().also { position = it } > 0) {
-                mBytes.flip()
-                mOutputStream!!.write(mBytes.array(), 0, position)
-                mBytes.clear()
+        if (mIoError.not()) {
+            mBytes?.apply {
+                var position: Int
+                if (mBytes.position().also { position = it } > 0) {
+                    mBytes.flip()
+                    mOutputStream?.write(mBytes.array(), 0, position)
+                    mBytes.clear()
+                }
             }
         }
     }
@@ -230,23 +233,24 @@ class FastPrintWriter : PrintWriter {
         if (mPos > 0) {
             if (mOutputStream != null) {
                 val charBuffer = CharBuffer.wrap(mText, 0, mPos)
-                var result = mCharset!!.encode(charBuffer, mBytes, true)
-                while (!mIoError) {
-                    if (result.isError) {
+                var result = mCharset?.encode(charBuffer, mBytes, true)
+                while (mIoError.not()) {
+                    if (result?.isError == true) {
                         throw IOException(result.toString())
-                    } else if (result.isOverflow) {
+                    } else if (result?.isOverflow == true) {
                         flushBytesLocked()
-                        result = mCharset!!.encode(charBuffer, mBytes, true)
+                        result = mCharset?.encode(charBuffer, mBytes, true)
                         continue
                     }
                     break
                 }
-                if (!mIoError) {
+                if (mIoError.not()) {
                     flushBytesLocked()
                     mOutputStream.flush()
                 }
-            } else if (mWriter != null) {
-                if (!mIoError) {
+            }
+            else if (mWriter != null) {
+                if (mIoError.not()) {
                     mWriter.write(mText, 0, mPos)
                     mWriter.flush()
                 }
@@ -260,9 +264,9 @@ class FastPrintWriter : PrintWriter {
                     nonEolOff++
                 }
                 if (nonEolOff >= mPos) {
-                    mPrinter!!.println("")
+                    mPrinter?.println("")
                 } else {
-                    mPrinter!!.println(String(mText, 0, mPos - nonEolOff))
+                    mPrinter?.println(String(mText, 0, mPos - nonEolOff))
                 }
             }
             mPos = 0
@@ -278,11 +282,11 @@ class FastPrintWriter : PrintWriter {
         synchronized(lock) {
             try {
                 flushLocked()
-                if (!mIoError) {
+                if (mIoError.not()) {
                     mOutputStream?.flush() ?: mWriter?.flush()
                 }
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at flush(). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at flush(). ${e.message}")
                 setError()
             }
         }
@@ -294,7 +298,7 @@ class FastPrintWriter : PrintWriter {
                 flushLocked()
                 mOutputStream?.close() ?: mWriter?.close()
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at close(). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at close(). ${e.message}")
                 setError()
             }
         }
@@ -313,7 +317,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(charArray, 0, charArray.size)
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at print(charArray: CharArray). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at print(charArray: CharArray). ${e.message}")
                 setError()
             }
         }
@@ -332,7 +336,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(ch)
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at print(ch: Char). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at print(ch: Char). ${e.message}")
                 setError()
             }
         }
@@ -355,7 +359,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(str, 0, str.length)
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at print(str: String). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at print(str: String). ${e.message}")
                 setError()
             }
         }
@@ -388,7 +392,7 @@ class FastPrintWriter : PrintWriter {
                     flushLocked()
                 }
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at println(). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at println(). ${e.message}")
                 setError()
             }
         }
@@ -449,7 +453,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(buf, offset, count)
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at write(buf: CharArray, offset: Int, count: Int). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at write(buf: CharArray, offset: Int, count: Int). ${e.message}")
                 setError()
             }
         }
@@ -471,7 +475,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(oneChar.toChar())
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at write(oneChar: Int). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at write(oneChar: Int). ${e.message}")
                 setError()
             }
         }
@@ -488,7 +492,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(str, 0, str.length)
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at write(str: String). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at write(str: String). ${e.message}")
                 setError()
             }
         }
@@ -511,7 +515,7 @@ class FastPrintWriter : PrintWriter {
             try {
                 appendLocked(str, offset, count)
             } catch (e: IOException) {
-                Logan.e(tag = "FastPrintWriter", message = "Write failure at write(str: String, offset: Int, count: Int). ${e.message}")
+                kotlin.io.println("${TAG}. Write failure at write(str: String, offset: Int, count: Int). ${e.message}")
                 setError()
             }
         }
@@ -541,4 +545,9 @@ class FastPrintWriter : PrintWriter {
         write(output, 0, output.length)
         return this
     }
+
+    companion object {
+        const val TAG = "FastPrintWriter"
+    }
+
 }

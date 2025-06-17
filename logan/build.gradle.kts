@@ -110,7 +110,7 @@ android {
 
 group = "com.binishmatheww"
 val artifactId = "logan"
-version = "2.0.0-SNAPSHOT"
+version = "2.0.0"
 
 mavenPublishing {
     configure(
