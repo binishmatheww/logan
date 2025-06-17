@@ -91,6 +91,9 @@ object Logan {
     fun i(
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Info,
             tag = getTag(),
@@ -103,6 +106,9 @@ object Logan {
         tag: () -> String = { getTag() },
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Info,
             tag = tag.invoke(),
@@ -114,6 +120,9 @@ object Logan {
     fun w(
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Warn,
             tag = getTag(),
@@ -126,6 +135,9 @@ object Logan {
         tag: () -> String = { getTag() },
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Warn,
             tag = tag.invoke(),
@@ -139,6 +151,9 @@ object Logan {
         message: () -> String,
         throwable: Throwable? = null
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Warn,
             tag = tag.invoke(),
@@ -152,6 +167,9 @@ object Logan {
         tag: () -> String = { getTag() },
         throwable: Throwable? = null
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Warn,
             tag = tag.invoke(),
@@ -165,6 +183,9 @@ object Logan {
         tag: () -> String = { getTag() },
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = tag.invoke(),
@@ -179,6 +200,9 @@ object Logan {
         message: () -> String,
         throwable: Throwable? = null
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = tag.invoke(),
@@ -191,6 +215,9 @@ object Logan {
     fun e(
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = getTag(),
@@ -204,6 +231,9 @@ object Logan {
         tag: () -> String = { getTag() },
         throwable: Throwable?
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = tag.invoke(),
@@ -216,6 +246,9 @@ object Logan {
     fun e(
         throwable: Throwable?
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = getTag(),
@@ -229,6 +262,9 @@ object Logan {
         tag: () -> String = { getTag() },
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = tag.invoke(),
@@ -243,6 +279,9 @@ object Logan {
         message: () -> String,
         throwable: Throwable? = null
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = tag.invoke(),
@@ -255,6 +294,9 @@ object Logan {
     fun wtf(
         message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = getTag(),
@@ -268,6 +310,9 @@ object Logan {
         tag: () -> String = { getTag() },
         throwable: Throwable?
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = tag.invoke(),
@@ -280,6 +325,9 @@ object Logan {
     fun wtf(
         throwable: Throwable?
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Error,
             tag = getTag(),
@@ -294,6 +342,9 @@ object Logan {
         message: String,
         continuation: Boolean = false
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         if (message.length > 3000) {
             platform.nativeLog(
                 level = level,
