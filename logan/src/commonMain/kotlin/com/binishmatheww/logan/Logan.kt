@@ -12,6 +12,8 @@ import kotlinx.datetime.format.char
  */
 object Logan {
 
+    private var isLoggingEnabled = true
+
     private val platform = getPlatform()
 
     private const val TAG = "Logan"
@@ -22,119 +24,137 @@ object Logan {
         amPmHour(); char(':'); minute(); char(':'); second(); char(' '); amPmMarker("am", "pm")
     }
 
-    fun v(
-        message: String
+    fun toggleLogging(
+        isLoggingEnabled: Boolean
     ) {
+        this.isLoggingEnabled = isLoggingEnabled
+    }
+
+    fun v(
+        message: () -> String
+    ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Verbose,
             tag = getTag(),
-            message = message,
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun v(
-        tag: String = getTag(),
-        message: String
+        tag: () -> String = { getTag() },
+        message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Verbose,
-            tag = tag,
-            message = message,
+            tag = tag.invoke(),
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun d(
-        message: String
+        message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Debug,
             tag = getTag(),
-            message = message,
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun d(
-        tag: String = getTag(),
-        message: String
+        tag: () -> String = { getTag() },
+        message: () -> String
     ) {
+        if(isLoggingEnabled.not()) {
+            return
+        }
         log(
             level = LoganLevel.Debug,
-            tag = tag,
-            message = message,
+            tag = tag.invoke(),
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun i(
-        message: String
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Info,
             tag = getTag(),
-            message = message,
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun i(
-        tag: String = getTag(),
-        message: String
+        tag: () -> String = { getTag() },
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Info,
-            tag = tag,
-            message = message,
+            tag = tag.invoke(),
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun w(
-        message: String,
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Warn,
             tag = getTag(),
-            message = message,
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun w(
-        tag: String = getTag(),
-        message: String,
+        tag: () -> String = { getTag() },
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Warn,
-            tag = tag,
-            message = message,
+            tag = tag.invoke(),
+            message = message.invoke(),
             continuation = false
         )
     }
 
     fun w(
-        tag: String = getTag(),
-        message: String,
+        tag: () -> String = { getTag() },
+        message: () -> String,
         throwable: Throwable? = null
     ) {
         log(
             level = LoganLevel.Warn,
-            tag = tag,
-            message = message + '\n' + platform.getStackTraceString(throwable),
+            tag = tag.invoke(),
+            message = message.invoke() + '\n' + platform.getStackTraceString(throwable),
             continuation = false
         )
     }
 
 
     fun w(
-        tag: String = getTag(),
+        tag: () -> String = { getTag() },
         throwable: Throwable? = null
     ) {
         log(
             level = LoganLevel.Warn,
-            tag = tag,
+            tag = tag.invoke(),
             message = platform.getStackTraceString(throwable),
             continuation = false
         )
@@ -142,51 +162,51 @@ object Logan {
 
 
     fun e(
-        tag: String = getTag(),
-        message: String
+        tag: () -> String = { getTag() },
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Error,
-            tag = tag,
-            message = message,
+            tag = tag.invoke(),
+            message = message.invoke(),
             continuation = false
         )
     }
 
 
     fun e(
-        tag: String = getTag(),
-        message: String,
+        tag: () -> String = { getTag() },
+        message: () -> String,
         throwable: Throwable? = null
     ) {
         log(
             level = LoganLevel.Error,
-            tag = tag,
-            message = message + '\n' + platform.getStackTraceString(throwable),
+            tag = tag.invoke(),
+            message = message.invoke() + '\n' + platform.getStackTraceString(throwable),
             continuation = false
         )
     }
 
 
     fun e(
-        message: String
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Error,
             tag = getTag(),
-            message = message,
+            message = message.invoke(),
             continuation = false
         )
     }
 
 
     fun e(
-        tag: String = getTag(),
+        tag: () -> String = { getTag() },
         throwable: Throwable?
     ) {
         log(
             level = LoganLevel.Error,
-            tag = tag,
+            tag = tag.invoke(),
             message = platform.getStackTraceString(throwable),
             continuation = false
         )
@@ -206,51 +226,51 @@ object Logan {
 
 
     fun wtf(
-        tag: String = getTag(),
-        message: String
+        tag: () -> String = { getTag() },
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Error,
-            tag = tag,
-            message = message,
+            tag = tag.invoke(),
+            message = message.invoke(),
             continuation = false
         )
     }
 
 
     fun wtf(
-        tag: String = getTag(),
-        message: String,
+        tag: () -> String = { getTag() },
+        message: () -> String,
         throwable: Throwable? = null
     ) {
         log(
             level = LoganLevel.Error,
-            tag = tag,
-            message = message + '\n' + platform.getStackTraceString(throwable),
+            tag = tag.invoke(),
+            message = message.invoke() + '\n' + platform.getStackTraceString(throwable),
             continuation = false
         )
     }
 
 
     fun wtf(
-        message: String
+        message: () -> String
     ) {
         log(
             level = LoganLevel.Error,
             tag = getTag(),
-            message = message,
+            message = message.invoke(),
             continuation = false
         )
     }
 
 
     fun wtf(
-        tag: String = getTag(),
+        tag: () -> String = { getTag() },
         throwable: Throwable?
     ) {
         log(
             level = LoganLevel.Error,
-            tag = tag,
+            tag = tag.invoke(),
             message = platform.getStackTraceString(throwable),
             continuation = false
         )
@@ -278,13 +298,13 @@ object Logan {
             platform.nativeLog(
                 level = level,
                 tag = tag,
-                message = message.take( 3000),
+                message = message.take(3000),
                 continuation = continuation
             )
             log(
                 level = level,
                 tag = tag,
-                message = message.drop( 3000),
+                message = message.drop(3000),
                 continuation = true
             )
         }
